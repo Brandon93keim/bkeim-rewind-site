@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B Keim Rewind Marketing — Covington, LA</title>
+<meta name="description" content="B Keim Rewind is a Louisiana marketing studio producing the branding, content, and search strategy that grows local businesses and drives sales.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,500;1,700;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+     FONTS: display = Archivo (clean bold grotesque, w/ italics for
+     emphasis words) · labels = Space Mono. Both from Google Fonts.
+     ============================================================ */
+  :root{
+    --field:#1E3D34; --field2:#173029; --ink:#0c1612;
+    --bone:#f5efe5; --paper:#fffdf8; --line:#e2dccd;
+    --blush:#f1cfc4; --blush2:#fadcd2; --blush-deep:#b98571;
+    --sage:#86c1a6; --sage-dk:#3F6E5B; --mut:#6c7a70;
+    --font-display:'Archivo',system-ui,sans-serif;
+    --font-mono:'Space Mono',ui-monospace,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bone);color:var(--field);font-family:var(--font-display);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 30px}
+  section{scroll-margin-top:80px}
+  em{font-style:italic}
+
+  /* labels / eyebrows */
+  .ey{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:700}
+
+  /* ---------- NAV ---------- */
+  .topbar{background:var(--field);position:sticky;top:0;z-index:50}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+  .brand .wm{font-weight:800;font-size:18px;letter-spacing:-.4px;color:var(--bone)}
+  .brand .wm em{font-weight:500;color:var(--blush)}
+  .navlinks{display:flex;gap:30px;font-size:15px;font-weight:600}
+  .navlinks a{color:var(--bone);text-decoration:none;opacity:.82}
+  .navlinks a:hover{opacity:1;color:var(--blush)}
+  .book{background:var(--blush);color:var(--field);padding:11px 20px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none}
+  .book:hover{background:var(--blush2)}
+
+  /* ---------- HERO (bg video) ---------- */
+  .hero{position:relative;background:var(--field);color:var(--bone);min-height:88vh;display:flex;align-items:center;overflow:hidden}
+  /* VIDEO: replace .herobg block with:
+     <video class="herovid" autoplay muted loop playsinline poster="assets/hero-poster.jpg">
+       <source src="assets/hero.mp4" type="video/mp4"></video>  */
+  .herobg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:8px;color:var(--blush);border:2px dashed rgba(241,207,196,.4);margin:18px;border-radius:18px;background:rgba(241,207,196,.05)}
+  .herobg .ico{font-size:34px}
+  .herobg .ttl{font-weight:700;font-size:18px;color:var(--bone)}
+  .herobg .meta{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--sage)}
+  .herobg .desc{font-size:14px;max-width:48ch;color:#cdddd3;font-weight:400;line-height:1.5;padding:0 20px}
+  .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(12,22,18,.82) 0%,rgba(12,22,18,.5) 55%,rgba(12,22,18,.2) 100%)}
+  .herotext{position:relative;z-index:2;padding:60px 0}
+  .herotext .ey{color:var(--blush);margin-bottom:20px}
+  h1{font-size:clamp(46px,8.5vw,108px);line-height:.9;font-weight:800;letter-spacing:-3px;max-width:15ch}
+  h1 em{color:var(--blush)}
+  .herotext .sub{font-size:clamp(17px,2vw,21px);line-height:1.45;font-weight:500;max-width:46ch;color:#dce8e0;margin-top:26px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+  .btn-pri{background:var(--blush);color:var(--field);padding:16px 30px;border-radius:100px;font-weight:700;text-decoration:none;font-size:16px;white-space:nowrap}
+  .btn-pri:hover{background:var(--blush2)}
+  .btn-sec{background:transparent;border:2px solid var(--bone);color:var(--bone);padding:14px 26px;border-radius:100px;font-weight:700;text-decoration:none;font-size:16px;white-space:nowrap}
+  .btn-sec:hover{background:var(--bone);color:var(--field)}
+
+  /* ---------- LOGO WALL ---------- */
+  .roster{background:var(--ink);color:var(--bone);padding:34px 0}
+  .roster .pl{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:18px}
+  .logos{display:flex;flex-wrap:wrap;gap:18px 40px;align-items:center}
+  .logos span{font-weight:700;font-size:18px;letter-spacing:-.3px;opacity:.85}
+  .logos span:hover{opacity:1}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .shead{margin:0 0 30px}
+  .shead .ey{color:var(--sage-dk);margin-bottom:14px}
+  .shead h2{font-size:clamp(34px,6vw,66px);font-weight:800;letter-spacing:-2px;line-height:.92}
+  .shead h2 em{color:var(--sage-dk)}
+  .shead.onpine .ey{color:var(--blush)} .shead.onpine h2{color:var(--bone)} .shead.onpine h2 em{color:var(--blush)}
+
+  .band{padding:90px 0}
+  .band.pine{background:var(--field);color:var(--bone)}
+
+  /* media placeholder */
+  .ph{border:2px dashed var(--blush-deep);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:var(--blush-deep);padding:26px;background:rgba(185,133,113,.06)}
+  .ph .ico{font-size:28px;line-height:1}
+  .ph .ttl{font-weight:700;font-size:16px;color:var(--field)}
+  .ph .meta{font-family:var(--font-mono);font-size:12px;letter-spacing:1px;color:var(--sage-dk)}
+  .ph .desc{font-size:13.5px;max-width:42ch;color:#5a6b61;font-weight:400;line-height:1.5}
+  .ph.ondark{border-color:var(--blush);color:var(--blush);background:rgba(241,207,196,.06)}
+  .ph.ondark .ttl{color:var(--bone)} .ph.ondark .desc{color:#cdddd3}
+  .ratio-16x9{aspect-ratio:16/9} .ratio-4x5{aspect-ratio:4/5} .ratio-3x2{aspect-ratio:3/2}
+
+  /* ---------- CLIENT SPOTLIGHT ---------- */
+  .spot{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:center;margin-bottom:70px}
+  .spot.flip .media{order:2}
+  .spot .lbl{display:inline-block;background:var(--blush);color:var(--blush-deep);font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:6px 12px;border-radius:100px;margin-bottom:16px}
+  .spot h3{font-size:clamp(30px,4.4vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:.94;margin-bottom:14px}
+  .spot h3 em{color:var(--sage-dk)}
+  .spot .clogo{font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mut);margin-bottom:14px}
+  .spot p{font-size:16.5px;line-height:1.6;font-weight:500;color:#3a4a43;max-width:46ch}
+  .stats{display:flex;gap:30px;margin:24px 0;flex-wrap:wrap}
+  .stat .n{font-size:38px;font-weight:800;letter-spacing:-1px;color:var(--sage-dk)}
+  .stat .l{font-size:12px;color:var(--mut);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:1px}
+  .tlink{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--field);text-decoration:none;border-bottom:2px solid var(--blush);padding-bottom:2px}
+  .tlink:hover{border-color:var(--sage-dk)}
+
+  /* ---------- WORK GRID ---------- */
+  .work{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .work .cap{margin-top:12px}
+  .work .cap .t{font-weight:800;font-size:18px;letter-spacing:-.3px}
+  .work .cap .s{font-family:var(--font-mono);font-size:12px;color:var(--sage-dk);text-transform:uppercase;letter-spacing:1px}
+
+  /* ---------- SERVICES (POLA-style columns) ---------- */
+  .svcgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin-top:10px}
+  .svccol h4{font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--blush);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(134,193,166,.3)}
+  .svccol ul{list-style:none}
+  .svccol li{font-size:16px;font-weight:500;color:#dce8e0;padding:7px 0}
+
+  /* ---------- CTA ---------- */
+  .cta{background:var(--blush);color:var(--field);padding:clamp(50px,8vw,96px) 30px;text-align:center}
+  .cta h2{font-size:clamp(38px,7vw,84px);font-weight:800;letter-spacing:-2.5px;line-height:.9}
+  .cta h2 em{color:var(--field2)}
+  .cta p{font-size:18px;font-weight:500;margin:18px auto 32px;max-width:44ch;color:#3a5249}
+  .cta .btn-pri{background:var(--field);color:var(--bone)}
+  .cta .btn-pri:hover{background:var(--field2)}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:var(--bone);padding:60px 0 44px}
+  .fgrid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}
+  .fcol .ft{font-family:var(--font-mono);font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--sage);margin-bottom:14px}
+  .fcol a,.fcol p{display:block;color:var(--bone);text-decoration:none;font-size:15px;font-weight:500;margin-bottom:8px;opacity:.9}
+  .fcol a:hover{opacity:1;color:var(--blush)}
+  .fbar{margin-top:40px;padding-top:24px;border-top:1px solid rgba(246,240,232,.16);font-size:13px;color:var(--sage);font-family:var(--font-mono)}
+
+  @media(max-width:860px){
+    .spot,.spot.flip .media{grid-template-columns:1fr;order:0}
+    .spot{grid-template-columns:1fr;gap:24px}
+    .work{grid-template-columns:1fr 1fr}
+    .svcgrid{grid-template-columns:1fr}
+    .navlinks{display:none}
+    h1{letter-spacing:-1.5px}
+  }
+  @media(max-width:540px){ .work{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV =====================
+     LOGO: inline SVG stand-in (light version, for the dark bar).
+     Replace the <svg>…</svg> with:
+       <img src="assets/logo-light.png" alt="B Keim Rewind" height="32">
+     using a WHITE/REVERSED export of your logo. -->
+<div class="topbar">
+  <div class="wrap">
+    <nav>
+      <a class="brand" href="#top">
+        <svg width="44" height="29" viewBox="0 0 46 30" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="43" height="27" rx="6" fill="none" stroke="#f5efe5" stroke-width="2.4"/>
+          <rect x="7" y="12" width="5" height="6" rx="1.5" fill="#f5efe5"/>
+          <rect x="34" y="12" width="5" height="6" rx="1.5" fill="#f5efe5"/>
+          <path d="M23 9 L16.5 15 L23 21 Z" fill="#f1cfc4"/>
+          <path d="M30 9 L23.5 15 L30 21 Z" fill="#f1cfc4"/>
+        </svg>
+        <span class="wm">B Keim <em>Rewind</em></span>
+      </a>
+      <div class="navlinks">
+        <a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a>
+      </div>
+      <a class="book" href="#contact">Let's talk</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="top">
+  <div class="herobg">
+    <div class="ico">&#9654;</div>
+    <div class="ttl">Background showreel video</div>
+    <div class="meta">Full-bleed &middot; 1920&times;1080 &middot; muted autoplay loop &middot; ~20&ndash;40 sec</div>
+    <div class="desc">A montage of your best motion work playing quietly behind the headline. Keep it punchy &mdash; brand films, ad cutdowns, social clips. A dark scrim sits on top so text stays readable.</div>
+  </div>
+  <div class="scrim"></div>
+  <div class="wrap herotext">
+    <div class="ey">Marketing studio &middot; Covington, LA</div>
+    <h1>Reach more.<br><em>Sell more.</em></h1>
+    <p class="sub">We produce the branding, content, and search strategy that gets local businesses seen &mdash; and bought from.</p>
+    <div class="cta-row">
+      <a class="btn-pri" href="#contact">Let's create</a>
+      <a class="btn-sec" href="#work">See the work</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== LOGO WALL ===================== -->
+<div class="roster">
+  <div class="wrap">
+    <div class="pl">Trusted by businesses across Louisiana</div>
+    <div class="logos">
+      <!-- swap each span for <img src="assets/clients/NAME.svg" alt="…" height="30"> -->
+      <span>Cox Parker Contractors</span><span>Bateman McDonald Law</span><span>Lakeside Toyota</span><span>Jani-King</span><span>Mercedes-Benz</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CLIENT SPOTLIGHTS ===================== -->
+<div class="band">
+  <div class="wrap">
+    <div class="shead">
+      <div class="ey">Selected work</div>
+      <h2>Proof, not <em>promises.</em></h2>
+    </div>
+
+    <!-- Spotlight 1: Bateman -->
+    <div class="spot">
+      <div class="media">
+        <div class="ph ratio-3x2">
+          <div class="ico">&#9654;</div>
+          <div class="ttl">Case image or video</div>
+          <div class="meta">3:2 &middot; 1800&times;1200</div>
+          <div class="desc">A results walkthrough, an ad still, or a screenshot of their search ranking climbing.</div>
+        </div>
+      </div>
+      <div class="body">
+        <span class="lbl">Client spotlight</span>
+        <h3>Cases, <em>delivered.</em></h3>
+        <div class="clogo">Bateman McDonald Law &middot; Baton Rouge</div>
+        <p>We rebuilt their local search presence and ran targeted ad campaigns engineered around one outcome: qualified new cases landing in the firm's inbox, month after month.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">XX%</div><div class="l">More inquiries</div></div>
+          <div class="stat"><div class="n">XX</div><div class="l">New cases / mo</div></div>
+          <div class="stat"><div class="n">#X</div><div class="l">Local ranking</div></div>
+        </div>
+        <a class="tlink" href="#contact">Start a project like this &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Spotlight 2: Cox Parker (flipped) -->
+    <div class="spot flip">
+      <div class="media">
+        <div class="ph ratio-3x2">
+          <div class="ico">&#9635;</div>
+          <div class="ttl">Brand image</div>
+          <div class="meta">3:2 &middot; 1800&times;1200</div>
+          <div class="desc">A hero shot of the brand in the wild &mdash; truck wrap, jobsite signage, or the logo system.</div>
+        </div>
+      </div>
+      <div class="body">
+        <span class="lbl">Featured brand</span>
+        <h3>Built to <em>last.</em></h3>
+        <div class="clogo">Cox Parker Contractors &middot; Mandeville</div>
+        <p>A complete brand identity built to look as solid as the work &mdash; so a Northshore contractor reads as the established, obvious choice before a prospect ever picks up the phone.</p>
+        <a class="tlink" href="#contact">Build your brand &rarr;</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== WORK GRID ===================== -->
+<div class="band" id="work" style="padding-top:0">
+  <div class="wrap">
+    <div class="shead">
+      <div class="ey">More work</div>
+      <h2>Recently <em>shipped.</em></h2>
+    </div>
+    <div class="work">
+      <div>
+        <div class="ph ratio-4x5"><div class="ico">&#9635;</div><div class="ttl">Project image</div><div class="meta">4:5 &middot; 1080&times;1350</div><div class="desc">Social content or photo set.</div></div>
+        <div class="cap"><div class="t">Lakeside Toyota</div><div class="s">Content &amp; social</div></div>
+      </div>
+      <div>
+        <div class="ph ratio-4x5"><div class="ico">&#9635;</div><div class="ttl">Project image</div><div class="meta">4:5 &middot; 1080&times;1350</div><div class="desc">Brand or campaign visual.</div></div>
+        <div class="cap"><div class="t">Jani-King</div><div class="s">Branding</div></div>
+      </div>
+      <div>
+        <div class="ph ratio-4x5"><div class="ico">&#9635;</div><div class="ttl">Project image</div><div class="meta">4:5 &middot; 1080&times;1350</div><div class="desc">Ad creative or video still.</div></div>
+        <div class="cap"><div class="t">Mercedes-Benz</div><div class="s">Paid ads &amp; video</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SERVICES ===================== -->
+<div class="band pine" id="services">
+  <div class="wrap">
+    <div class="shead onpine">
+      <div class="ey">What we do</div>
+      <h2>Full-service, <em>start to sale.</em></h2>
+    </div>
+    <div class="svcgrid">
+      <div class="svccol">
+        <h4>Brand</h4>
+        <ul><li>Logo &amp; identity</li><li>Visual systems</li><li>Messaging &amp; positioning</li><li>Print &amp; collateral</li></ul>
+      </div>
+      <div class="svccol">
+        <h4>Content</h4>
+        <ul><li>Video production</li><li>Photography</li><li>Social media</li><li>Short-form &amp; reels</li></ul>
+      </div>
+      <div class="svccol">
+        <h4>Growth</h4>
+        <ul><li>SEO &amp; local search</li><li>Google &amp; Meta ads</li><li>Lead &amp; case generation</li><li>Web design</li></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== TESTIMONIAL VIDEO ===================== -->
+<div class="band" id="about">
+  <div class="wrap">
+    <div class="shead">
+      <div class="ey">In their words</div>
+      <h2>Don't take <em>our word.</em></h2>
+    </div>
+    <div class="ph ratio-16x9">
+      <div class="ico">&#9654;</div>
+      <div class="ttl">Client testimonial video</div>
+      <div class="meta">16:9 &middot; 1920&times;1080 &middot; 30&ndash;60 sec &middot; captioned</div>
+      <div class="desc">A client on camera saying what changed after working with you. A face and a voice convert harder than a text quote &mdash; but you can swap this for a pull-quote card if you'd rather.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CTA ===================== -->
+<section class="cta" id="contact">
+  <h2>Seen enough?<br>Let's build something that <em>performs.</em></h2>
+  <p>Book a free 20-minute discovery call. We'll look at where you are and map the fastest path to more reach and more sales.</p>
+  <a class="btn-pri" href="#">Book a discovery call</a>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fcol" style="max-width:280px">
+        <div class="ft">B Keim Rewind</div>
+        <p style="opacity:.8">Marketing content that grows reach and drives sales. Covington, Louisiana.</p>
+      </div>
+      <div class="fcol">
+        <div class="ft">Explore</div>
+        <a href="#work">Work</a><a href="#services">Services</a><a href="#contact">Book a call</a>
+      </div>
+      <div class="fcol">
+        <div class="ft">Contact</div>
+        <a href="mailto:hello@bkeimrewind.com">hello@bkeimrewind.com</a>
+        <a href="tel:+10000000000">(XXX) XXX-XXXX</a>
+        <p>Covington, LA</p>
+      </div>
+      <div class="fcol">
+        <div class="ft">Follow</div>
+        <a href="#">Instagram</a><a href="#">Facebook</a><a href="#">LinkedIn</a>
+      </div>
+    </div>
+    <div class="fbar">&copy; 2026 B Keim Rewind Marketing &mdash; all rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
