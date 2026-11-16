@@ -18,10 +18,12 @@
   // `npx wrangler secret put <NAME>` and never committed. Local overrides go in .dev.vars.
   "vars": {
     // Comma-separated; every submission goes out as one email with all of them in "to".
+    // Must be the Resend account email while CONTACT_FROM is onboarding@resend.dev.
     "CONTACT_TO": "Brandon@bkrewind.com",
-    // Must be on a domain verified in Resend. TODO: verify bkrewind.com in Resend (DNS records
-    // can be added at Wix while the domain is still there), or switch to an already-verified domain.
-    "CONTACT_FROM": "B Keim Rewind Website <website@bkrewind.com>",
+    // Resend's shared test sender. It only delivers to the Resend account's own address, so
+    // CONTACT_TO must stay Brandon@bkrewind.com while this is set. TODO: once bkrewind.com is verified
+    // in Resend, switch to "B Keim Rewind Website <website@bkrewind.com>" and add more recipients.
+    "CONTACT_FROM": "B Keim Rewind Website <onboarding@resend.dev>",
     // "true" sends through Resend; RESEND_API_KEY and TURNSTILE_SECRET_KEY must then be set.
     "EMAIL_ENABLED": "true"
   }

@@ -36,9 +36,24 @@ One-time setup before the form can send:
 1. Turnstile: create a widget in Cloudflare (hostnames: the workers.dev host now, bkrewind.com later).
    Put the site key in `.env.production` as `PUBLIC_TURNSTILE_SITE_KEY`, then
    `npx wrangler secret put TURNSTILE_SECRET_KEY`.
-2. Resend: verify bkrewind.com as a sending domain (or change `CONTACT_FROM` to an already-verified
-   domain), then `npx wrangler secret put RESEND_API_KEY`.
-3. `npm run deploy`.
+2. Resend: `CONTACT_FROM` is currently Resend's test sender `onboarding@resend.dev`, which only
+   delivers to the Resend account email (Brandon@bkrewind.com, the current `CONTACT_TO`). Set
+   `RESEND_API_KEY` as a secret. To send to anyone else, verify bkrewind.com in Resend and switch
+   `CONTACT_FROM` to `website@bkrewind.com`.
+3. Deploy (Workers Builds or `npm run deploy`).
+
+`PUBLIC_TURNSTILE_SITE_KEY` is read only at build time (`astro build`), from `.env.production` or
+from a build environment variable. If neither is present the widget is left out of the page and
+every submission fails the bot check. Runtime vars and secrets cannot supply it.
+
+## Workers Builds (Git deploy)
+
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
+- Production branch must be the branch you want live on workers.dev. Other branches run the
+  non-production command (`npx wrangler versions upload`), which only makes a preview version.
+- Secrets (`RESEND_API_KEY`, `TURNSTILE_SECRET_KEY`) go in the Worker's Settings > Variables and
+  Secrets. Plain vars come from `wrangler.jsonc` and are replaced on every deploy.
 
 Local: copy `.env.example` to `.env` and `.dev.vars.example` to `.dev.vars` (keeps EMAIL_ENABLED=false),
 then `npm run preview` and post to `http://localhost:8787/api/contact`.
