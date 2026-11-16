@@ -1,0 +1,52 @@
+---
+/** Rewind mark + wordmark. TODO: swap for the final logo files when ready. */
+interface Props {
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+const { tone = 'light', class: className } = Astro.props;
+const frame = tone === 'light' ? '#f5efe5' : '#1e3d34';
+const arrows = tone === 'light' ? '#f1cfc4' : '#b98571';
+---
+<span class:list={['logo', `logo--${tone}`, className]}>
+  <svg class="logo__mark" width="44" height="29" viewBox="0 0 46 30" aria-hidden="true">
+    <rect x="1.5" y="1.5" width="43" height="27" rx="6" fill="none" stroke={frame} stroke-width="2.4" />
+    <rect x="7" y="12" width="5" height="6" rx="1.5" fill={frame} />
+    <rect x="34" y="12" width="5" height="6" rx="1.5" fill={frame} />
+    <path d="M23 9 L16.5 15 L23 21 Z" fill={arrows} />
+    <path d="M30 9 L23.5 15 L30 21 Z" fill={arrows} />
+  </svg>
+  <span class="logo__wm">B Keim <em>Rewind</em></span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+  .logo__mark {
+    flex: none;
+  }
+  .logo__wm {
+    font-size: 1.125rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .logo__wm em {
+    font-weight: 500;
+  }
+  .logo--light .logo__wm {
+    color: var(--bone);
+  }
+  .logo--light .logo__wm em {
+    color: var(--blush);
+  }
+  .logo--dark .logo__wm {
+    color: var(--pine);
+  }
+  .logo--dark .logo__wm em {
+    color: var(--blush-text);
+  }
+</style>

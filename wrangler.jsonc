@@ -1,0 +1,28 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bkeim-rewind-site",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  // Serve on the default *.workers.dev URL only. No custom domain or route until bkrewind.com
+  // moves off Wix (do not add "routes" here yet).
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true },
+  // Non-secret config. Secrets (RESEND_API_KEY, TURNSTILE_SECRET_KEY) are set with
+  // `npx wrangler secret put <NAME>` and never committed. Local overrides go in .dev.vars.
+  "vars": {
+    // Comma-separated; every submission goes out as one email with all of them in "to".
+    "CONTACT_TO": "Brandon@bkrewind.com",
+    // Must be on a domain verified in Resend. TODO: verify bkrewind.com in Resend (DNS records
+    // can be added at Wix while the domain is still there), or switch to an already-verified domain.
+    "CONTACT_FROM": "B Keim Rewind Website <website@bkrewind.com>",
+    // "true" sends through Resend; RESEND_API_KEY and TURNSTILE_SECRET_KEY must then be set.
+    "EMAIL_ENABLED": "true"
+  }
+}

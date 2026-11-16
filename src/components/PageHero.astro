@@ -1,0 +1,34 @@
+---
+interface Props {
+  eyebrow: string;
+  titleId?: string;
+}
+const { eyebrow, titleId } = Astro.props;
+---
+<section class="page-hero bg-pine on-dark" aria-labelledby={titleId}>
+  <div class="container page-hero__inner">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 id={titleId}><slot name="title" /></h1>
+    <div class="lede page-hero__lede"><slot /></div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    padding-block: clamp(3rem, 2rem + 5vw, 6.5rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+  }
+  .page-hero__inner {
+    display: grid;
+    gap: 1.25rem;
+  }
+  h1 {
+    max-width: 18ch;
+    font-size: var(--step-4);
+  }
+  h1 :global(em) {
+    color: var(--blush);
+  }
+  .page-hero__lede {
+    opacity: 0.88;
+  }
+</style>

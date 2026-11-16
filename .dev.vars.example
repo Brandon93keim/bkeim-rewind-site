@@ -1,0 +1,9 @@
+# Copy to .dev.vars for `wrangler dev`. .dev.vars is gitignored.
+# Overrides wrangler.jsonc vars locally. Keep EMAIL_ENABLED=false so dev never sends real mail.
+CONTACT_TO=you@example.com
+EMAIL_ENABLED=false
+# CONTACT_FROM="B Keim Rewind Website <website@bkrewind.com>"
+# RESEND_API_KEY=
+
+# Cloudflare's public Turnstile test secret (always passes). Leave unset to skip verification.
+# TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA

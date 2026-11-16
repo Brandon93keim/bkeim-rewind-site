@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { projects } from '../data/portfolio';
+---
+<Base
+  title="Portfolio | B Keim Rewind Marketing"
+  description="TODO: meta description for the Portfolio page."
+>
+  <PageHero eyebrow="Portfolio" titleId="portfolio-title">
+    <Fragment slot="title">TODO: portfolio <em>headline.</em></Fragment>
+    <p class="todo">TODO: one sentence framing the work.</p>
+  </PageHero>
+
+  <section class="section" aria-label="Projects">
+    <div class="container">
+      <ul class="grid" role="list">
+        {projects.map((p) => (
+          <li class="card" data-reveal>
+            <Placeholder label={`${p.category} project image or video`} ratio={p.ratio} tone={p.tone} />
+            <div class="card__meta">
+              <p class="mono card__cat">{p.category}</p>
+              <h2 class="card__title">{p.title}</h2>
+              <p class="card__client">{p.client}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-paper" aria-labelledby="clients-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Clients</p>
+        <h2 id="clients-title">TODO: client roster <em>headline.</em></h2>
+      </div>
+      <p class="todo">TODO: client names or logo row.</p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 2.5rem 1.5rem;
+    padding: 0;
+    list-style: none;
+  }
+  .card__meta {
+    display: grid;
+    gap: 0.2rem;
+    margin-top: 1rem;
+  }
+  .card__cat {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage-dk);
+  }
+  .card__title {
+    font-size: var(--step-1);
+  }
+  .card__client {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  @media (min-width: 40rem) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>

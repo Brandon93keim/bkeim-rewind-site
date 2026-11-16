@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+<Base title="Page not found | B Keim Rewind Marketing" description="That page could not be found." noindex>
+  <section class="section">
+    <div class="container nf">
+      <p class="eyebrow">404</p>
+      <h1>Let's <em>rewind.</em></h1>
+      <p class="lede">That page doesn't exist, or it moved when the site was rebuilt.</p>
+      <a class="btn btn--pine" href="/">Back home <Icon name="arrow-left" /></a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+    min-height: 50vh;
+    align-content: center;
+  }
+  h1 {
+    font-size: var(--step-4);
+  }
+  h1 em {
+    color: var(--blush-text);
+  }
+</style>

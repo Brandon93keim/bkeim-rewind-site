@@ -1,0 +1,213 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Placeholder from '../components/Placeholder.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { pillars } from '../data/services';
+import { projects } from '../data/portfolio';
+import { cta, site } from '../data/site';
+---
+<Base
+  title="B Keim Rewind Marketing | Covington, LA"
+  description="TODO: meta description. B Keim Rewind Marketing is a Covington, Louisiana marketing studio serving New Orleans, Baton Rouge and the Northshore."
+>
+  <section class="hero bg-pine on-dark" aria-labelledby="hero-title">
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow">Marketing studio &middot; {site.location}</p>
+        <h1 id="hero-title">TODO: headline that <em>rewinds</em> the ordinary.</h1>
+        <p class="lede todo">TODO: two-sentence positioning statement. Who we help, what changes for them.</p>
+        <div class="hero__actions">
+          <a class="btn btn--blush" href={cta.href}>{cta.label} <Icon name="arrow-right" /></a>
+          <a class="btn btn--ghost" href="/portfolio">See the work</a>
+        </div>
+      </div>
+      <Placeholder class="hero__media" label="Showreel or hero video, 16:9" ratio="16 / 9" tone="pine" />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What we do</p>
+        <h2 id="services-title">Full service, <em>start to sale.</em></h2>
+      </div>
+      <ul class="pillars" role="list">
+        {pillars.map((p) => (
+          <li class="pillar" data-reveal>
+            <span class="pillar__num mono">{p.number}</span>
+            <h3>{p.title}</h3>
+            <p class="todo">{p.summary}</p>
+            <ul class="pillar__list mono" role="list">
+              {p.services.map((s) => <li>{s}</li>)}
+            </ul>
+          </li>
+        ))}
+      </ul>
+      <a class="btn btn--pine" href="/services">All services <Icon name="arrow-right" /></a>
+    </div>
+  </section>
+
+  <section class="section bg-paper" aria-labelledby="work-title">
+    <div class="container">
+      <div class="section-head section-head--row">
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2 id="work-title">Recent <em>projects.</em></h2>
+        </div>
+        <a class="btn btn--ghost" href="/portfolio">Full portfolio <Icon name="arrow-right" /></a>
+      </div>
+      <ul class="work" role="list">
+        {projects.slice(0, 3).map((p) => (
+          <li data-reveal>
+            <Placeholder label={`${p.category} project image`} ratio="4 / 3" tone={p.tone} />
+            <p class="work__cat mono">{p.category}</p>
+            <h3 class="work__title">{p.title}</h3>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="about-title">
+    <div class="container about">
+      <Placeholder label="Portrait of Brandon, 4:5" ratio="4 / 5" tone="blush" />
+      <div class="about__copy">
+        <p class="eyebrow">Who we are</p>
+        <h2 id="about-title">TODO: short <em>about</em> headline.</h2>
+        <p class="todo">TODO: two or three sentences introducing Brandon and the studio, and why local businesses choose B Keim Rewind.</p>
+        <a class="btn btn--pine" href="/about-us">About us <Icon name="arrow-right" /></a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(2.5rem, 1.5rem + 5vw, 6rem) clamp(3rem, 2rem + 5vw, 6.5rem);
+  }
+  .hero__inner {
+    display: grid;
+    gap: 2.5rem;
+  }
+  .hero__copy {
+    display: grid;
+    gap: 1.25rem;
+    align-content: center;
+  }
+  .hero h1 {
+    font-size: var(--step-4);
+    max-width: 14ch;
+  }
+  .hero h1 em {
+    color: var(--blush);
+  }
+  .hero .lede {
+    opacity: 0.88;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .pillars {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    padding: 0;
+    list-style: none;
+  }
+  .pillar {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: 1.75rem 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--paper);
+  }
+  .pillar__num {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--blush-text);
+  }
+  .pillar h3 {
+    font-size: var(--step-2);
+  }
+  .pillar__list {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+    font-size: 0.8125rem;
+    color: var(--sage-dk);
+  }
+
+  .section-head--row {
+    align-items: end;
+  }
+  .section-head--row .btn {
+    justify-self: start;
+  }
+  .work {
+    display: grid;
+    gap: 2rem;
+    padding: 0;
+    list-style: none;
+  }
+  .work__cat {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage-dk);
+  }
+  .work__title {
+    margin-top: 0.25rem;
+    font-size: var(--step-1);
+  }
+
+  .about {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  .about :global(.ph) {
+    max-width: 26rem;
+  }
+  .about__copy {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+  .about__copy h2 {
+    font-size: var(--step-3);
+  }
+
+  @media (min-width: 48rem) {
+    .pillars,
+    .work {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .section-head--row {
+      grid-template-columns: 1fr auto;
+    }
+    .about {
+      grid-template-columns: 5fr 7fr;
+      gap: clamp(2rem, 1rem + 4vw, 5rem);
+    }
+  }
+  @media (min-width: 64rem) {
+    .hero__inner {
+      grid-template-columns: 5fr 6fr;
+      align-items: center;
+      gap: 3.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,569 @@
+---
+/**
+ * Accessible form built from a shared FormDef (src/lib/forms.ts).
+ * Validates in the browser with the same rules the Worker uses, posts JSON, and swaps in
+ * inline success or error states without a page reload.
+ */
+import Icon from '../Icon.astro';
+import { HONEYPOT, type FormDef } from '../../lib/forms';
+import { site } from '../../data/site';
+
+interface Props {
+  form: FormDef;
+  submitLabel?: string;
+  successTitle: string;
+  successText: string;
+}
+
+const { form, submitLabel = 'Submit', successTitle, successText } = Astro.props;
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+const id = (name: string) => `${form.id}-${name}`;
+---
+{siteKey && (
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+)}
+
+<div class="form-shell" data-form-shell>
+  <form
+    class="form"
+    action={form.endpoint}
+    method="post"
+    novalidate
+    data-form={form.id}
+    aria-describedby={`${form.id}-required-note`}
+  >
+    <p class="form__note" id={`${form.id}-required-note`}>
+      Fields marked <span aria-hidden="true">*</span><span class="visually-hidden">with an asterisk</span> are required.
+    </p>
+
+    <div class="form__grid">
+      {form.fields.map((f) => (
+        f.type === 'radio' ? (
+          <fieldset class="field field--radio" data-field={f.name} aria-describedby={id(`${f.name}-error`)}>
+            <legend class="field__label">
+              {f.label}{f.required && <span class="field__req" aria-hidden="true"> *</span>}
+            </legend>
+            <div class="field__options">
+              {f.options?.map((opt) => (
+                <label class="choice">
+                  <input type="radio" name={f.name} value={opt} required={f.required} />
+                  <span>{opt}</span>
+                </label>
+              ))}
+            </div>
+            <p class="field__error" id={id(`${f.name}-error`)} data-error-for={f.name}></p>
+          </fieldset>
+        ) : (
+          <div class:list={['field', { 'field--half': f.half }]} data-field={f.name}>
+            <label class="field__label" for={id(f.name)}>
+              {f.label}{f.required && <span class="field__req" aria-hidden="true"> *</span>}
+            </label>
+            {f.type === 'select' ? (
+              <div class="field__select">
+                <select
+                  id={id(f.name)}
+                  name={f.name}
+                  required={f.required}
+                  aria-describedby={id(`${f.name}-error`)}
+                >
+                  <option value="">Choose one</option>
+                  {f.options?.map((opt) => <option value={opt}>{opt}</option>)}
+                </select>
+              </div>
+            ) : f.type === 'textarea' ? (
+              <textarea
+                id={id(f.name)}
+                name={f.name}
+                rows="6"
+                maxlength={f.maxLength}
+                required={f.required}
+                aria-describedby={id(`${f.name}-error`)}
+              />
+            ) : (
+              <input
+                id={id(f.name)}
+                name={f.name}
+                type={f.type}
+                maxlength={f.maxLength}
+                autocomplete={f.autocomplete}
+                inputmode={f.type === 'tel' ? 'tel' : undefined}
+                required={f.required}
+                aria-describedby={id(`${f.name}-error`)}
+              />
+            )}
+            <p class="field__error" id={id(`${f.name}-error`)} data-error-for={f.name}></p>
+          </div>
+        )
+      ))}
+
+      <!-- Honeypot: hidden from people and assistive tech, tempting to bots. -->
+      <div class="form__hp" aria-hidden="true">
+        <label for={id(HONEYPOT)}>Leave this field empty</label>
+        <input id={id(HONEYPOT)} type="text" name={HONEYPOT} tabindex="-1" autocomplete="off" />
+      </div>
+    </div>
+
+    {siteKey ? (
+      <div class="form__turnstile cf-turnstile" data-sitekey={siteKey} data-theme="light" data-size="flexible"></div>
+    ) : import.meta.env.DEV ? (
+      <div class="form__turnstile form__turnstile--todo">TODO: Turnstile widget (set PUBLIC_TURNSTILE_SITE_KEY in .env)</div>
+    ) : null}
+
+    <div class="form__status" role="alert" data-form-status hidden>
+      <p data-form-status-text></p>
+      <p>
+        You can also email <a href={site.emailHref}>{site.email}</a>{site.phone && <> or call <a href={site.phoneHref}>{site.phone}</a></>}.
+      </p>
+    </div>
+
+    <button class="btn btn--blush form__submit" type="submit" data-form-submit>
+      <span data-submit-label>{submitLabel}</span>
+      <Icon name="arrow-right" />
+    </button>
+
+    <noscript>
+      <p class="form__noscript">
+        This form needs JavaScript. You can email <a href={site.emailHref}>{site.email}</a>{site.phone && <> or call <a href={site.phoneHref}>{site.phone}</a></>}.
+      </p>
+    </noscript>
+  </form>
+
+  <div class="form-success" tabindex="-1" data-form-success hidden>
+    <span class="form-success__mark" aria-hidden="true"></span>
+    <h2 class="form-success__title">{successTitle}</h2>
+    <p>{successText}</p>
+  </div>
+</div>
+
+<script>
+  import { forms, validateField, type FormDef } from '../../lib/forms';
+
+  declare global {
+    interface Window {
+      turnstile?: { reset(el?: Element | string): void };
+    }
+  }
+
+  const GENERIC_ERROR = 'Something went wrong and your message was not sent. Please try again.';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-form]').forEach((formEl) => {
+    const def: FormDef = forms[formEl.dataset.form as keyof typeof forms];
+    const shell = formEl.closest<HTMLElement>('[data-form-shell]')!;
+    const success = shell.querySelector<HTMLElement>('[data-form-success]')!;
+    const status = formEl.querySelector<HTMLElement>('[data-form-status]')!;
+    const statusText = formEl.querySelector<HTMLElement>('[data-form-status-text]')!;
+    const submit = formEl.querySelector<HTMLButtonElement>('[data-form-submit]')!;
+    const submitLabel = formEl.querySelector<HTMLElement>('[data-submit-label]')!;
+    const idleLabel = submitLabel.textContent;
+    let attempted = false;
+
+    const valueOf = (name: string) => {
+      const v = new FormData(formEl).get(name);
+      return typeof v === 'string' ? v : '';
+    };
+
+    const setError = (name: string, message: string | null) => {
+      const wrap = formEl.querySelector<HTMLElement>(`[data-field="${name}"]`);
+      const errorEl = formEl.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+      const controls = formEl.querySelectorAll<HTMLInputElement>(`[name="${name}"]`);
+      wrap?.classList.toggle('is-invalid', !!message);
+      controls.forEach((c) => (message ? c.setAttribute('aria-invalid', 'true') : c.removeAttribute('aria-invalid')));
+      if (errorEl) errorEl.textContent = message ?? '';
+    };
+
+    const check = (name: string) => {
+      const field = def.fields.find((f) => f.name === name);
+      if (!field) return true;
+      const message = validateField(field, valueOf(name));
+      setError(name, message);
+      return !message;
+    };
+
+    // Re-check a field as the user fixes it, but only after the first submit attempt,
+    // so nobody gets scolded while typing for the first time.
+    const recheck = (e: Event) => {
+      const name = (e.target as HTMLInputElement).name;
+      if (attempted && name) check(name);
+    };
+    formEl.addEventListener('input', recheck);
+    formEl.addEventListener('change', recheck);
+
+    const showStatus = (message: string) => {
+      statusText.textContent = message;
+      status.hidden = false;
+    };
+
+    const setBusy = (busy: boolean) => {
+      submit.disabled = busy;
+      formEl.setAttribute('aria-busy', String(busy));
+      submitLabel.textContent = busy ? 'Sending...' : idleLabel;
+    };
+
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      attempted = true;
+      status.hidden = true;
+
+      const invalid = def.fields.filter((f) => !check(f.name));
+      if (invalid.length) {
+        formEl.querySelector<HTMLElement>(`[name="${invalid[0].name}"]`)?.focus();
+        return;
+      }
+
+      setBusy(true);
+      try {
+        const payload = Object.fromEntries(
+          [...new FormData(formEl)].filter((entry): entry is [string, string] => typeof entry[1] === 'string'),
+        );
+        const res = await fetch(def.endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const body = (await res.json().catch(() => ({}))) as {
+          ok?: boolean;
+          message?: string;
+          errors?: Record<string, string>;
+        };
+
+        if (res.ok && body.ok) {
+          formEl.reset();
+          formEl.hidden = true;
+          success.hidden = false;
+          success.focus();
+          return;
+        }
+
+        if (body.errors) {
+          for (const [name, message] of Object.entries(body.errors)) setError(name, message);
+          const first = Object.keys(body.errors)[0];
+          if (first) formEl.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+        }
+        showStatus(body.message || GENERIC_ERROR);
+      } catch {
+        showStatus(GENERIC_ERROR);
+      } finally {
+        setBusy(false);
+        // Turnstile tokens are single use; get a fresh one for any retry.
+        window.turnstile?.reset(formEl.querySelector('.cf-turnstile') ?? undefined);
+      }
+    });
+  });
+</script>
+
+<style>
+  .form {
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .form__note {
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+
+  .form__grid {
+    display: grid;
+    gap: 1.5rem 1.25rem;
+  }
+
+  @media (min-width: 40rem) {
+    .form__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .field:not(.field--half) {
+      grid-column: 1 / -1;
+    }
+  }
+
+  .field {
+    display: grid;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  fieldset.field {
+    padding: 0;
+    border: 0;
+  }
+
+  .field__label {
+    padding: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .field__req {
+    color: var(--blush-text);
+  }
+
+  .field input:not([type='radio']),
+  .field textarea {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid rgb(30 61 52 / 0.28);
+    border-bottom: 3px solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--white);
+    font-size: 1rem;
+    line-height: 1.5;
+    transition:
+      border-color 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+
+  .field__select {
+    position: relative;
+  }
+
+  .field__select::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 1.1rem;
+    width: 0.55rem;
+    height: 0.55rem;
+    border-right: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  .field select {
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.8rem 2.75rem 0.8rem 1rem;
+    border: 1px solid rgb(30 61 52 / 0.28);
+    border-bottom: 3px solid var(--ink);
+    border-radius: var(--radius);
+    background: var(--white);
+    font-size: 1rem;
+    line-height: 1.5;
+    appearance: none;
+    transition:
+      border-color 0.2s var(--ease),
+      box-shadow 0.2s var(--ease);
+  }
+
+  .field select:focus-visible {
+    outline: none;
+    border-color: var(--pine);
+    box-shadow: 0 0 0 2px var(--pine);
+  }
+
+  .field.is-invalid select {
+    border-color: var(--error);
+    border-bottom-color: var(--error);
+  }
+
+  .field textarea {
+    min-height: 10rem;
+    resize: vertical;
+  }
+
+  .field input:not([type='radio']):hover,
+  .field textarea:hover {
+    border-color: rgb(30 61 52 / 0.5);
+    border-bottom-color: var(--ink);
+  }
+
+  .field input:not([type='radio']):focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+    border-color: var(--pine);
+    box-shadow: 0 0 0 2px var(--pine);
+  }
+
+  .field__options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .choice {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 7rem;
+    min-height: 3.25rem;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid rgb(30 61 52 / 0.28);
+    border-radius: var(--radius);
+    background: var(--white);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+  }
+
+  .choice input {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin: 0;
+    accent-color: var(--pine);
+  }
+
+  .choice:has(input:checked) {
+    border-color: var(--pine);
+    background: rgb(134 193 166 / 0.14);
+    box-shadow: inset 0 0 0 1px var(--pine);
+  }
+
+  .choice:has(input:focus-visible) {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  .choice input:focus-visible {
+    outline: none;
+  }
+
+  .field__error {
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--error);
+  }
+
+  .field__error:empty {
+    display: none;
+  }
+
+  .field.is-invalid input:not([type='radio']),
+  .field.is-invalid textarea,
+  .field.is-invalid .choice {
+    border-color: var(--error);
+  }
+
+  .field.is-invalid input:not([type='radio']),
+  .field.is-invalid textarea {
+    border-bottom-color: var(--error);
+  }
+
+  /* Off-screen rather than display:none, which some bots skip */
+  .form__hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form__turnstile {
+    min-height: 65px;
+  }
+
+  .form__turnstile--todo {
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    border: 2px dashed var(--placeholder);
+    background: var(--paper);
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--placeholder-ink);
+    text-align: center;
+  }
+
+  .form__status {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1rem 1.25rem;
+    border-left: 6px solid var(--error);
+    background: #fbeceb;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .form__status p:first-child {
+    font-weight: 700;
+  }
+
+  .form__status a,
+  .form__noscript a {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .form__submit {
+    justify-self: start;
+    min-width: 12rem;
+  }
+
+  .form__submit:disabled {
+    cursor: progress;
+    opacity: 0.7;
+  }
+
+  .form__noscript {
+    font-size: 0.9375rem;
+  }
+
+  /* Success state */
+  .form-success {
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    padding-block: 1rem;
+  }
+
+  .form-success:focus {
+    outline: none;
+  }
+
+  .form-success__mark {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--pine);
+  }
+
+  /* Check mark */
+  .form-success__mark::after {
+    content: '';
+    width: 1.5rem;
+    height: 0.8rem;
+    margin-top: -0.3rem;
+    border-bottom: 4px solid var(--white);
+    border-left: 4px solid var(--white);
+    transform: rotate(-45deg);
+  }
+
+  .form-success__title {
+    font-size: var(--step-3);
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .form-success p {
+    max-width: 32rem;
+    font-size: var(--step-1);
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .form-success:not([hidden]) {
+      animation: form-success-in 0.6s var(--ease);
+    }
+  }
+
+  @keyframes form-success-in {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+</style>

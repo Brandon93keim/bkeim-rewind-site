@@ -1,0 +1,51 @@
+:root {
+  /* Brand: pine, sage, blush, bone */
+  --pine: #1e3d34;
+  --pine-deep: #173029;
+  --sage: #86c1a6;
+  --sage-dk: #3f6e5b;
+  --blush: #f1cfc4;
+  --blush-lt: #fadcd2;
+  --blush-deep: #b98571;
+  --bone: #f5efe5;
+
+  /* Derived */
+  --blush-text: #8f5a46; /* blush-deep darkened for AA small text on bone/white */
+  --ink: #0c1612;
+  --paper: #fffdf8;
+  --white: #fff;
+  --muted: #56645b;
+  --line: #e2dccd;
+  --line-inverse: rgb(245 239 229 / 0.18);
+  --placeholder: #d9d1c1;
+  --placeholder-ink: #56645b;
+  --error: #b3261e;
+
+  /* Type */
+  --font-display: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);
+  --step-1: clamp(1.125rem, 1.05rem + 0.35vw, 1.3125rem);
+  --step-2: clamp(1.5rem, 1.25rem + 1.1vw, 2.125rem);
+  --step-3: clamp(2rem, 1.5rem + 2.4vw, 3.5rem);
+  --step-4: clamp(2.5rem, 1.6rem + 4.2vw, 5.25rem);
+
+  /* Space */
+  --gutter: 1.25rem;
+  --container: 75rem;
+  --section-y: clamp(3.5rem, 2.5rem + 5vw, 7.5rem);
+  --header-h: 4rem;
+
+  --radius: 10px;
+  --radius-lg: 18px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: 2rem;
+    --header-h: 4.75rem;
+  }
+}

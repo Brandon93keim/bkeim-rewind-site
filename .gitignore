@@ -1,12 +1,13 @@
-# OS files
+node_modules/
+dist/
+.astro/
+.wrangler/
+.dev.vars
+.env*
+!.env.example
+!.env.production
 .DS_Store
-Thumbs.db
-desktop.ini
 
-# Editor
-.vscode/*
-!.vscode/extensions.json
-
-# Logs / misc
-*.log
-.env
+# Source material, kept locally only
+assets-raw/
+reference/

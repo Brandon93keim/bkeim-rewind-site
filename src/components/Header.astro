@@ -1,0 +1,233 @@
+---
+import Logo from './Logo.astro';
+import { nav, cta } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => path === href;
+---
+<header class="site-header on-dark" data-header>
+  <div class="site-header__bar container">
+    <a class="site-header__brand" href="/" aria-label="B Keim Rewind Marketing, home">
+      <Logo tone="light" />
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-toggle>
+      <span class="visually-hidden">Menu</span>
+      <span class="menu-toggle__bars" aria-hidden="true"></span>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="Primary" data-menu>
+      <ul class="site-nav__list" role="list">
+        <li><a href="/" aria-current={isCurrent('/') ? 'page' : undefined}>Home</a></li>
+        {nav.map((item) => (
+          <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+      <a class="btn btn--blush site-nav__cta" href={cta.href} aria-current={isCurrent(cta.href) ? 'page' : undefined}>{cta.label}</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (toggle && header) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      header.classList.toggle('is-open', open);
+      document.documentElement.classList.toggle('menu-open', open);
+    };
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && header.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    window.matchMedia('(min-width: 56rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--pine);
+    color: var(--bone);
+  }
+
+  .site-header__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--header-h);
+    gap: 0 1rem;
+  }
+
+  .site-header__brand {
+    display: inline-flex;
+    padding-block: 0.75rem;
+    text-decoration: none;
+  }
+
+  /* Mobile first: without JS the nav simply shows as a row under the logo. */
+  .menu-toggle {
+    display: none;
+  }
+
+  .site-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    width: 100%;
+    padding-bottom: 1rem;
+  }
+
+  .site-nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.25rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav__list a {
+    display: inline-block;
+    padding-block: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    opacity: 0.85;
+  }
+
+  .site-nav__list a:hover,
+  .site-nav__list a[aria-current='page'] {
+    opacity: 1;
+    color: var(--blush);
+  }
+
+  .site-nav__list a[aria-current='page'] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.4em;
+  }
+
+  /* With JS on small screens: collapse behind the menu button. */
+  :global(.js) .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-right: -0.5rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--bone);
+  }
+
+  .menu-toggle__bars,
+  .menu-toggle__bars::before,
+  .menu-toggle__bars::after {
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    background: currentColor;
+    transition: transform 0.25s var(--ease), opacity 0.2s var(--ease);
+  }
+
+  .menu-toggle__bars {
+    position: relative;
+  }
+
+  .menu-toggle__bars::before,
+  .menu-toggle__bars::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  .menu-toggle__bars::before {
+    top: -7px;
+  }
+
+  .menu-toggle__bars::after {
+    top: 7px;
+  }
+
+  .is-open .menu-toggle__bars {
+    background: transparent;
+  }
+
+  .is-open .menu-toggle__bars::before {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .is-open .menu-toggle__bars::after {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  :global(.js) .site-nav {
+    display: none;
+  }
+
+  :global(.js) .is-open .site-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.25rem;
+    min-height: calc(100dvh - var(--header-h));
+    padding-block: 1.5rem 2.5rem;
+    border-top: 1px solid var(--line-inverse);
+  }
+
+  :global(.js) .is-open .site-nav__list {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  :global(.js) .is-open .site-nav__list a {
+    display: block;
+    padding-block: 0.85rem;
+    border-bottom: 1px solid var(--line-inverse);
+    font-size: var(--step-2);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  :global(.js) .is-open .site-nav__list a[aria-current='page'] {
+    text-decoration: none;
+  }
+
+  :global(.menu-open) {
+    overflow: hidden;
+  }
+
+  @media (min-width: 56rem) {
+    .site-header__bar {
+      flex-wrap: nowrap;
+    }
+
+    :global(.js) .menu-toggle {
+      display: none;
+    }
+
+    .site-nav,
+    :global(.js) .site-nav {
+      display: flex;
+      flex-direction: row;
+      width: auto;
+      padding: 0;
+      gap: 2rem;
+    }
+
+    .site-nav__list {
+      gap: 1.75rem;
+    }
+
+    .site-nav__list a {
+      font-size: 0.9375rem;
+    }
+  }
+</style>

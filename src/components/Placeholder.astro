@@ -1,0 +1,60 @@
+---
+/** Labelled stand-in for a photo or video that has not been supplied yet. */
+interface Props {
+  label: string;
+  ratio?: string;
+  tone?: 'sage' | 'blush' | 'pine';
+  class?: string;
+}
+const { label, ratio = '4 / 3', tone = 'sage', class: className } = Astro.props;
+---
+<div class:list={['ph', `ph--${tone}`, className]} style={`aspect-ratio: ${ratio}`} role="img" aria-label={`Placeholder: ${label}`}>
+  <span class="ph__tag">TODO</span>
+  <span class="ph__label">{label}</span>
+</div>
+
+<style>
+  .ph {
+    position: relative;
+    display: grid;
+    place-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    overflow: hidden;
+  }
+  .ph::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(135deg, transparent 0 14px, rgb(30 61 52 / 0.06) 14px 15px);
+  }
+  .ph--sage {
+    background: #cfe3d8;
+    color: var(--pine);
+  }
+  .ph--blush {
+    background: var(--blush);
+    color: var(--pine);
+  }
+  .ph--pine {
+    background: var(--sage-dk);
+    color: var(--bone);
+  }
+  .ph__tag,
+  .ph__label {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+  }
+  .ph__tag {
+    justify-self: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: var(--bone);
+    color: var(--pine);
+    font-weight: 700;
+  }
+</style>

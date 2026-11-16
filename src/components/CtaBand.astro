@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+import { cta } from '../data/site';
+---
+<section class="cta-band bg-blush" aria-labelledby="cta-title">
+  <div class="container cta-band__inner">
+    <div>
+      <p class="eyebrow">Next step</p>
+      <h2 id="cta-title">Let's build something <em>that performs.</em></h2>
+      <p class="todo">TODO: one sentence on what happens after someone reaches out.</p>
+    </div>
+    <a class="btn btn--pine" href={cta.href}>{cta.label} <Icon name="arrow-right" /></a>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem);
+  }
+  .cta-band__inner {
+    display: grid;
+    gap: 1.75rem;
+    align-items: end;
+  }
+  .cta-band .eyebrow {
+    color: var(--blush-text);
+  }
+  h2 {
+    margin-block: 0.75rem;
+    font-size: var(--step-3);
+  }
+  .cta-band .btn {
+    justify-self: start;
+  }
+  @media (min-width: 48rem) {
+    .cta-band__inner {
+      grid-template-columns: 1fr auto;
+    }
+  }
+</style>

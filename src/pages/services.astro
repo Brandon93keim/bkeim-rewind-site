@@ -1,0 +1,151 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { pillars } from '../data/services';
+
+const steps = [
+  { n: '01', title: 'TODO: Discover', text: 'TODO: what happens in this step.' },
+  { n: '02', title: 'TODO: Plan', text: 'TODO: what happens in this step.' },
+  { n: '03', title: 'TODO: Produce', text: 'TODO: what happens in this step.' },
+  { n: '04', title: 'TODO: Grow', text: 'TODO: what happens in this step.' },
+];
+---
+<Base
+  title="Services | B Keim Rewind Marketing"
+  description="TODO: meta description for the Services page."
+>
+  <PageHero eyebrow="Services" titleId="services-title">
+    <Fragment slot="title">Full service, <em>start to sale.</em></Fragment>
+    <p class="todo">TODO: one-paragraph overview of how the services fit together.</p>
+  </PageHero>
+
+  <section class="section" aria-label="Service areas">
+    <div class="container pillars">
+      {pillars.map((p) => (
+        <article class="pillar" id={p.id} aria-labelledby={`${p.id}-title`} data-reveal>
+          <header class="pillar__head">
+            <span class="mono pillar__num">{p.number}</span>
+            <h2 id={`${p.id}-title`}>{p.title}</h2>
+            <p class="todo">{p.summary}</p>
+          </header>
+          <ul class="pillar__services" role="list">
+            {p.services.map((s) => (
+              <li>
+                <h3>{s}</h3>
+                <p class="todo">TODO: one sentence on {s.toLowerCase()}.</p>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section bg-pine on-dark" aria-labelledby="process-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Process</p>
+        <h2 id="process-title">TODO: process <em>headline.</em></h2>
+      </div>
+      <ol class="steps" role="list">
+        {steps.map((s) => (
+          <li data-reveal>
+            <span class="mono steps__n">{s.n}</span>
+            <h3>{s.title}</h3>
+            <p class="todo">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .pillars {
+    display: grid;
+    gap: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+  }
+  .pillar {
+    display: grid;
+    gap: 1.75rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--pine);
+  }
+  .pillar__head {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+  }
+  .pillar__num {
+    font-weight: 700;
+    color: var(--blush-text);
+  }
+  .pillar h2 {
+    font-size: var(--step-3);
+  }
+  .pillar__services {
+    display: grid;
+    gap: 1px;
+    padding: 0;
+    list-style: none;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--line);
+  }
+  .pillar__services li {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.25rem 1.25rem;
+    background: var(--paper);
+  }
+  .pillar__services h3 {
+    font-size: var(--step-1);
+  }
+  .pillar__services p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .steps {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+  }
+  .steps li {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line-inverse);
+    border-radius: var(--radius-lg);
+  }
+  .steps__n {
+    font-weight: 700;
+    color: var(--blush);
+  }
+  .steps h3 {
+    font-size: var(--step-1);
+  }
+  .steps p {
+    opacity: 0.85;
+  }
+  @media (min-width: 40rem) {
+    .pillar__services {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .pillar {
+      grid-template-columns: 4fr 7fr;
+      gap: 3rem;
+    }
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

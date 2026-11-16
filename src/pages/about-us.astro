@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Placeholder from '../components/Placeholder.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+
+const values = [
+  { n: '01', title: 'TODO: Value one', text: 'TODO: one or two sentences.' },
+  { n: '02', title: 'TODO: Value two', text: 'TODO: one or two sentences.' },
+  { n: '03', title: 'TODO: Value three', text: 'TODO: one or two sentences.' },
+];
+---
+<Base
+  title="About Us | B Keim Rewind Marketing"
+  description="TODO: meta description for the About page."
+>
+  <PageHero eyebrow="About us" titleId="about-title">
+    <Fragment slot="title">TODO: about page <em>headline.</em></Fragment>
+    <p class="todo">TODO: one-paragraph intro to the studio.</p>
+  </PageHero>
+
+  <section class="section" aria-labelledby="story-title">
+    <div class="container story">
+      <Placeholder label="Brandon on set, 4:5" ratio="4 / 5" tone="blush" />
+      <div class="story__copy">
+        <p class="eyebrow">Our story</p>
+        <h2 id="story-title">TODO: story <em>headline.</em></h2>
+        <p class="todo">TODO: how B Keim Rewind started, and what Brandon brings (video production, marketing strategy, local roots).</p>
+        <p class="todo">TODO: who the studio works with and what a typical engagement looks like.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-paper" aria-labelledby="values-title">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How we work</p>
+        <h2 id="values-title">TODO: values <em>headline.</em></h2>
+      </div>
+      <ol class="values" role="list">
+        {values.map((v) => (
+          <li data-reveal>
+            <span class="mono values__n">{v.n}</span>
+            <h3>{v.title}</h3>
+            <p class="todo">{v.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="area-title">
+    <div class="container area">
+      <p class="eyebrow">Where we work</p>
+      <h2 id="area-title">Based in Covington. Working across <em>{site.serviceArea}.</em></h2>
+      <p class="todo">TODO: optional line about remote or out-of-market work.</p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .story {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  .story :global(.ph) {
+    max-width: 26rem;
+  }
+  .story__copy {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .story__copy h2,
+  .area h2 {
+    font-size: var(--step-3);
+  }
+  .values {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+    list-style: none;
+  }
+  .values li {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1.75rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--bone);
+  }
+  .values__n {
+    font-weight: 700;
+    color: var(--blush-text);
+  }
+  .values h3 {
+    font-size: var(--step-1);
+  }
+  .area {
+    display: grid;
+    gap: 1rem;
+    max-width: 52rem;
+  }
+  @media (min-width: 48rem) {
+    .story {
+      grid-template-columns: 5fr 7fr;
+      gap: clamp(2rem, 1rem + 4vw, 5rem);
+    }
+    .values {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
